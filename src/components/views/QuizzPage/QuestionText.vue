@@ -1,11 +1,16 @@
 <template>
   <div class="text-answer">
     <input
-      type="text"
       v-model="textAnswer"
+      type="text"
       placeholder="Введите ответ"
     />
-    <button :disabled="!canSubmit" @click="submitAnswer">Ответить</button>
+    <button 
+      :disabled="!canSubmit"
+      @click="submitAnswer"
+    >
+      Ответить
+    </button>
   </div>
 </template>
 

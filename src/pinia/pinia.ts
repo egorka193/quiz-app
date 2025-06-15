@@ -1,19 +1,39 @@
 import { defineStore } from 'pinia';
+import { checkInfo } from '@/services/adminApi';
 
-export const useQuizStore = defineStore('quiz', {
+interface User {
+  name: string;
+  role: 'admin' | 'guest';
+}
+
+export const useUserStore = defineStore('user', {
   state: () => ({
-    currentQuestion: 0,
-    answers: [] as string[],
+    user: null as User | null,
   }),
-  getters: {
-    answeredCount(state) {
-      return state.answers.length;
-    },
-  },
   actions: {
-    answerQuestion(answer: string) {
-      this.answers.push(answer);
-      this.currentQuestion++;
+    login(login: string, password: string): boolean {
+      const user = checkInfo(login, password);
+      if (user) {
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(user));
+        return true;
+      }
+      return false;
+    },
+    loginAsGuest() {
+      const user: User = { name: 'Гость', role: 'guest' };
+      this.user = user;
+      localStorage.setItem('user', JSON.stringify(user));
+    },
+    logout() {
+      this.user = null;
+      localStorage.removeItem('user');
+    },
+    initFromLocalStorage() {
+      const saved = localStorage.getItem('user');
+      if (saved) {
+        this.user = JSON.parse(saved);
+      }
     },
   },
 });

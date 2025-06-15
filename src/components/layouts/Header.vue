@@ -11,11 +11,27 @@
         </div>
         <div class="header__nav-item">
           <i class="mdi mdi-list-box" />
-          <span>Quizzes</span>
+          <RouterLink to="/quizzes">Quizzes</RouterLink>
         </div>
-        <div class="header__nav-item header__nav-sign-in">
+
+        <div v-if="userStore.user" class="header__user">
+          <span class="header__username">
+            <i class="mdi mdi-account" />
+            {{ userStore.user.name }}
+          </span>
+          <button @click="logout" class="header__logout">
+            <i class="mdi mdi-logout" />
+            Выйти
+          </button>
+        </div>
+
+        <div
+          v-else
+          class="header__nav-item header__nav-sign-in"
+          @click="openModal"
+        >
           <i class="mdi mdi-login" />
-          <span @click="openModal">Sign in with Google</span>
+          <span>Войти</span>
         </div>
       </div>
     </div>
@@ -28,6 +44,8 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import ModalSignIn from '@/ModalSignIn.vue';
+import { useUserStore } from '@/pinia/pinia';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   components: {
@@ -35,6 +53,8 @@ export default defineComponent({
   },
   setup() {
     const showModal = ref(false);
+    const userStore = useUserStore();
+    const router = useRouter();
 
     const openModal = () => {
       showModal.value = true;
@@ -43,10 +63,17 @@ export default defineComponent({
       showModal.value = false;
     };
 
+    const logout = async () => {
+      userStore.logout();
+      await router.push({ name: 'Home' });
+    };
+
     return {
       openModal,
       showModal,
       closeModal,
+      userStore,
+      logout,
     };
   },
 });
@@ -73,6 +100,17 @@ export default defineComponent({
   display: flex;
   gap: 20px;
 }
+
+.header__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(195, 243, 243, 0.7);
+  padding: 6px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 .header__nav-item {
   display: flex;
   gap: 10px;

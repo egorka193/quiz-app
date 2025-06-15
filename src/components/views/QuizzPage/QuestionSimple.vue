@@ -10,7 +10,12 @@
         {{ answer }}
       </li>
     </ul>
-    <button :disabled="!selectedAnswer" @click="submitAnswer">Ответить</button>
+    <button 
+      :disabled="!selectedAnswer"
+      @click="submitAnswer"
+    >
+      Ответить
+    </button>
   </div>
 </template>
 

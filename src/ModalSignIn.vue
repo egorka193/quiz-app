@@ -1,54 +1,95 @@
-
 <template>
-  <div
-    class="modal-overlay" 
+  <div 
+    class="modal-overlay"
     @click.self="close"
   >
     <div class="modal">
-      <h2>Вход</h2>
-      <input v-model="login" placeholder="Логин" />
-      <input v-model="password" type="password" placeholder="Пароль" />
+      <h2 class="modal-title">
+        Вход
+      </h2>
 
-      <div class="buttons">
-        <button @click="loginAsAdmin">Войти</button>
-        <button @click="loginAsGuest">Войти как гость</button>
+      <input 
+        v-model="login"
+        placeholder="Логин" 
+        class="modal-input"
+      />
+      <input 
+        v-model="password" 
+        type="password" 
+        placeholder="Пароль" 
+        class="modal-input"
+      />
+
+      <p 
+        v-if="errorMessage"
+        class="modal-error"
+      >
+        {{ errorMessage }}
+      </p>
+
+      <div class="modal-buttons">
+        <button 
+          class="btn btn-admin"
+          @click="loginAsAdmin"
+        >
+          Войти
+        </button>
+        <button 
+          class="btn btn-guest"
+          @click="loginAsGuest"
+        >
+          Войти как гость
+        </button>
       </div>
 
-      <button class="close" @click="close">×</button>
+      <button 
+        class="close"
+        @click="close"
+      >
+        ×
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import { useUserStore } from './pinia/pinia';
+import { useRouter } from 'vue-router';
+
 export default defineComponent({
-  name: 'AuthModal',
   emits: ['close'],
   setup(props, ctx) {
-    const login = ref<string>('');
-    const password = ref<string>('');
+    const login = ref('');
+    const password = ref('');
+    const errorMessage = ref('');
+    const router = useRouter();
 
-    const close = () => {
-      ctx.emit('close');
-    };
+    const userStore = useUserStore();
 
-    const loginAsAdmin = () => {
-      if (login.value === 'admin' && password.value === '1234') {
-        alert('Успешный вход как админ');
+    const loginAsAdmin = async () => {
+      const success = userStore.login(login.value, password.value);
+      if (success) {
         ctx.emit('close');
+        await router.push({ name: 'Admin' });
       } else {
-        alert('Неверный логин или пароль');
+        errorMessage.value = 'Неверный логин или пароль';
       }
     };
 
     const loginAsGuest = () => {
-      alert('Вы вошли как гость');
+      userStore.loginAsGuest(); 
+      ctx.emit('close');
+    };
+
+    const close = () => {
       ctx.emit('close');
     };
 
     return {
       login,
       password,
+      errorMessage,
       close,
       loginAsAdmin,
       loginAsGuest,
@@ -58,9 +99,15 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.modal-error {
+  color: red;
+  margin: 0.5rem 0;
+  text-align: center;
+}
 .modal-overlay {
   position: fixed;
-  inset: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
@@ -70,13 +117,13 @@ export default defineComponent({
   background: #fff;
   padding: 2rem 2.5rem;
   border-radius: 16px;
-  width: 320px;
+  width: 350px;
   max-width: 90vw;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
   position: relative;
   transform: translateY(-30px);
 }
-h2 {
+.modal-title {
   margin-top: 0;
   margin-bottom: 1.5rem;
   font-weight: 700;
@@ -84,7 +131,7 @@ h2 {
   text-align: center;
 }
 
-input {
+.modal-input {
   width: 100%;
   padding: 0.6rem 1rem;
   margin-bottom: 1rem;
@@ -95,21 +142,21 @@ input {
   outline: none;
 }
 
-input:focus {
+.modal-input:focus {
   border-color: #00bcd4;
   box-shadow: 0 0 6px #00bcd4;
 }
 
-.buttons {
+.modal-buttons {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   margin-top: 1.2rem;
 }
 
-button {
+.btn {
   flex: 1;
-  padding: 0.6rem 0;
+  padding: 0.7rem 0;
   font-weight: 600;
   font-size: 1rem;
   border-radius: 12px;
@@ -118,21 +165,21 @@ button {
   transition: background-color 0.3s;
 }
 
-.buttons button:first-child {
+.btn-admin {
   background-color: #00bcd4;
   color: white;
 }
 
-.buttons button:first-child:hover {
+.btn-admin:hover {
   background-color: #0097a7;
 }
 
-.buttons button:last-child {
+.btn-guest {
   background-color: #e0e0e0;
   color: #555;
 }
 
-.buttons button:last-child:hover {
+.btn-guest:hover {
   background-color: #bdbdbd;
 }
 

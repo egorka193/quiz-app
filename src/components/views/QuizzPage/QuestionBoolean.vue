@@ -1,5 +1,5 @@
 <template>
-  <ul class="answers-list">
+  <ul class="boolean-options">
     <li
       :class="{ selected: selected === true }"
       @click="select(true)"
@@ -12,7 +12,12 @@
     >
       Нет
     </li>
-    <button :disabled="selected === null" @click="submitAnswer">Ответить</button>
+    <button 
+      :disabled="selected === null"
+      @click="submitAnswer"
+    >
+      Ответить
+    </button>
   </ul>
 </template>
 
@@ -54,15 +59,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.answers-list {
+.boolean-options {
   display: flex;
+  flex-direction: column;
   gap: 20px;
   padding: 0;
   margin: 1rem 0;
   list-style: none;
 }
 
-.answers-list li {
+.boolean-options li {
   flex: 1;
   text-align: center;
   background-color: #f3f4f6;
@@ -74,11 +80,11 @@ export default defineComponent({
   border: 2px solid transparent;
 }
 
-.answers-list li:hover {
+.boolean-options li:hover {
   background-color: #e0e7ff;
 }
 
-.answers-list li.selected {
+.boolean-options li.selected {
   background-color: #4f46e5;
   color: white;
   border-color: #4338ca;

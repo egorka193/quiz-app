@@ -1,12 +1,20 @@
 <template>
   <div class="quiz-card">
     <div class="quiz-card__meta">
-      <p class="quiz-card__category">{{ test.title }}</p>
-      <p class="quiz-card__difficulty">easy</p>
+      <p class="quiz-card__category">
+        {{ test.title }}
+      </p>
+      <p class="quiz-card__difficulty">
+        easy
+      </p>
     </div>
     <div class="quiz-card__content">
-      <h3 class="quiz-card__title">{{ test.title }}</h3>
-      <p class="quiz-card__description">{{ test.description }}</p>
+      <h3 class="quiz-card__title">
+        {{ test.title }}
+      </h3>
+      <p class="quiz-card__description">
+        {{ test.description }}
+      </p>
     </div>
     <div class="quiz-card__info">
       <div>

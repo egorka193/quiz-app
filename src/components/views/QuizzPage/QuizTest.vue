@@ -5,21 +5,26 @@
 
     <div v-if="currentQuestion">
       <h3>Вопрос {{ currentQuestionIndex + 1 }} из {{ test.questions.length }}</h3>
-      <p class="question-text">{{ currentQuestion.question }}</p>
-      <!-- <p>Options: {{ currentQuestion.type }}</p> -->
+      <p class="question-text">
+        {{ currentQuestion.question }}
+      </p>
       <component
         :is="questionComponent"
         :question="currentQuestion"
         @submit="handleAnswer"
       />
 
-      <p v-if="answerSubmitted">Ответ принят!</p>
+      <p v-if="answerSubmitted">
+        Ответ принят!
+      </p>
     </div>
 
     <div v-else>
       <h3>Тест завершён!</h3>
       <p>Правильных ответов: {{ score }} из {{ test.questions.length }}</p>
-      <button @click="restartTest">Пройти заново</button>
+      <button @click="restartTest">
+        Пройти заново
+      </button>
     </div>
   </div>
 </template>
@@ -27,14 +32,16 @@
 <script lang="ts">
 import { defineComponent, ref, computed, type PropType } from 'vue';
 import { type Test } from '@/types';
-import QuestionSimMul from './QuestionSim&Mul.vue';
+import QuestionSimple from './QuestionSimple.vue';
+import QuestionMultiply from './QuestionMultiply.vue';
 import QuestionBoolean from './QuestionBoolean.vue';
 import QuestionText from './QuestionText.vue';
 
 export default defineComponent({
   name: 'QuizTest',
   components: {
-    QuestionSimMul,
+    QuestionSimple,
+    QuestionMultiply,
     QuestionBoolean,
     QuestionText,
   },
@@ -58,8 +65,8 @@ export default defineComponent({
     });
 
     const questionComponentMap = {
-      single: 'QuestionSimMul',
-      multiple: 'QuestionSimMul',
+      single: 'QuestionSimple',
+      multiple: 'QuestionMultiply',
       boolean: 'QuestionBoolean',
       text: 'QuestionText',
     };
