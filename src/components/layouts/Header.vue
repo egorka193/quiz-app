@@ -1,28 +1,40 @@
 <template>
   <div class="header">
     <div class="header-wrapper">
-      <div>
-        <h3>QUIZAPP</h3>
+      <div class="header__logo">
+        <RouterLink :to="{ name: RoutesNames.Home }">
+          QUIZAPP
+        </RouterLink>
       </div>
       <div class="header__nav">
         <div class="header__nav-item">
-          <i class="mdi mdi-home" />
-          <RouterLink to="/home">Home</RouterLink>
+          <RouterLink :to="{ name: RoutesNames.Home }">
+            <i class="mdi mdi-home" />
+            Home
+          </RouterLink>
         </div>
         <div class="header__nav-item">
-          <i class="mdi mdi-list-box" />
-          <RouterLink to="/quizzes">Quizzes</RouterLink>
+          <RouterLink :to="{ name: RoutesNames.Quizes }">
+            <i class="mdi mdi-list-box" />
+            Quizzes
+          </RouterLink>
         </div>
 
-        <div v-if="userStore.user" class="header__user">
+        <div 
+          v-if="userStore.user" 
+          class="header__user"
+        >
           <span class="header__username">
             <i class="mdi mdi-account" />
             {{ userStore.user.name }}
           </span>
-          <button @click="logout" class="header__logout">
+          <QAButton 
+            class="header__logout" 
+            @click="logout"
+          >
             <i class="mdi mdi-logout" />
             Выйти
-          </button>
+          </QAButton>
         </div>
 
         <div
@@ -41,15 +53,19 @@
     />
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import ModalSignIn from '@/ModalSignIn.vue';
+import ModalSignIn from '@/components/layouts/ModalSignIn.vue';
 import { useUserStore } from '@/pinia/pinia';
 import { useRouter } from 'vue-router';
+import { RoutesNames } from '@/router/types';
+import QAButton from '../shared/QAButton.vue';
 
 export default defineComponent({
   components: {
     ModalSignIn,
+    QAButton,
   },
   setup() {
     const showModal = ref(false);
@@ -74,6 +90,7 @@ export default defineComponent({
       closeModal,
       userStore,
       logout,
+      RoutesNames,
     };
   },
 });
@@ -87,6 +104,10 @@ export default defineComponent({
   -webkit-box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.14);
   -moz-box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.14);
   margin-bottom: 20px;
+}
+.header__logo {
+  font-weight: 600;
+  font-size: 20px;
 }
 .header-wrapper {
   max-width: 1280px;
@@ -115,6 +136,7 @@ export default defineComponent({
   display: flex;
   gap: 10px;
   padding: 7px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.5s ease;
 }
@@ -123,5 +145,9 @@ export default defineComponent({
 }
 .header__nav-sign-in{
   background-color: rgba(135, 222, 222, 0.603);
+}
+.header__logout {
+  box-shadow: none;
+  background-color: rgba(195, 243, 243, 0.071);
 }
 </style>

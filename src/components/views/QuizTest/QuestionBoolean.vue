@@ -1,40 +1,45 @@
 <template>
-  <ul class="boolean-options">
-    <li
-      :class="{ selected: selected === true }"
-      @click="select(true)"
-    >
-      Да
-    </li>
-    <li
-      :class="{ selected: selected === false }"
-      @click="select(false)"
-    >
-      Нет
-    </li>
+  <div>
+    <ul class="boolean-options">
+      <li
+        :class="{ selected: selected === true }"
+        @click="select(true)"
+      >
+        Да
+      </li>
+      <li
+        :class="{ selected: selected === false }"
+        @click="select(false)"
+      >
+        Нет
+      </li>
+    </ul>
     <button 
       :disabled="selected === null"
       @click="submitAnswer"
     >
       Ответить
     </button>
-  </ul>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, ref } from 'vue';
+import type { BooleanQuestion } from '@/types';
+import { computed, defineComponent, type PropType, ref } from 'vue';
 
 export default defineComponent({
-  name: 'QuestionBoolean',
   props: {
     question: {
-      type: Object as PropType<{
-        correctAnswer: boolean;
-      }>,
+      type: Object as PropType<BooleanQuestion>,
       required: true,
     },
   },
-  emits: ['submit'],
+  emits: {
+    submit: (payload: { isCorrect: boolean; answer: boolean }) => {
+      return typeof payload.isCorrect === 'boolean' &&
+             typeof payload.answer === 'boolean';
+    },
+  },
   setup(props, ctx) {
     const selected = ref<boolean | null>(null);
 
@@ -42,17 +47,20 @@ export default defineComponent({
       selected.value = val;
     };
 
-    const submitAnswer = () => {
-      if (selected.value === null) return;
+    const canSubmit = computed(() => selected.value !== null);
 
-      const isCorrect = selected.value === props.question.correctAnswer;
-      ctx.emit('submit', { isCorrect, answer: selected.value });
+    const submitAnswer = () => {
+      if (!canSubmit.value) return;
+
+      const isCorrect = canSubmit.value === props.question.correctAnswer;
+      ctx.emit('submit', { isCorrect, answer: canSubmit.value });
     };
 
     return {
       selected,
       select,
       submitAnswer,
+      canSubmit,
     };
   },
 });

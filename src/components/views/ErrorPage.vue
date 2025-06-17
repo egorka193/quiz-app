@@ -1,5 +1,5 @@
 <template>
-  <div class="error">
+  <div class="error-page">
     <p>404</p>
     <p>NOT FOUND</p>
   </div>
@@ -14,11 +14,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.error{
+.error-page{
   text-align: center;
 }
-.error p{
-  margin: 0, auto;
+.error-page p{
+  margin: 0 auto;
   font-weight: 800;
   font-size: 40px;
 }

@@ -26,24 +26,20 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { allTests } from '@/allTests';
+import { allTests } from '@/resourses/allTests';
 
 export default defineComponent({
   setup() {
-    const selectedTests = allTests.filter(test =>
-      ['vue-001', 'html-css-001', 'js-001'].includes(test.id),
-    );
-
     return {
-      selectedTests,
+      selectedTests: allTests,
     };
   },
   
 });
 </script>
-
 
 <style scoped>
 .home-test {

@@ -1,4 +1,4 @@
-import { QuestionType, type Test } from './types';
+import { QuestionType, type Test } from '@/types';
 
 export const vueTest: Test = {
   id: 'vue-001',

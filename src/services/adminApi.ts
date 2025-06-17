@@ -1,20 +1,25 @@
+import { LocalStorageKeys, getUserFromLs } from '@/services/types';
 
-interface User {
+export interface User {
   name: string;
   role: 'admin' | 'guest';
 }
 
-export const checkInfo = (login: string, password: string): User | null => {
-  const raw = localStorage.getItem('users');
-  if (!raw) return null;
+export const checkInfo = async (login: string, password: string): Promise<User | null> => {
+  const admin = await getUserFromLs(LocalStorageKeys.Admin);
+  const user = await getUserFromLs(LocalStorageKeys.User);
 
-  const users = JSON.parse(raw) as { login: string; password: string; name: string; role: 'admin' | 'guest' }[];
-
-  const found = users.find(u => u.login === login && u.password === password);
-  if (found) {
+  if (login === admin.login && password === admin.password) {
     return {
-      name: found.name,
-      role: found.role,
+      name: 'Admin',
+      role: 'admin',
+    };
+  }
+
+  if (login === user.login && password === user.password) {
+    return {
+      name: 'User',
+      role: 'guest',
     };
   }
 

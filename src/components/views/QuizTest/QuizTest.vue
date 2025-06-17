@@ -22,9 +22,12 @@
     <div v-else>
       <h3>Тест завершён!</h3>
       <p>Правильных ответов: {{ score }} из {{ test.questions.length }}</p>
-      <button @click="restartTest">
+      <QAButton
+        class="quiz-test__restart-button"
+        @click="restartTest"
+      >
         Пройти заново
-      </button>
+      </QAButton>
     </div>
   </div>
 </template>
@@ -33,15 +36,16 @@
 import { defineComponent, ref, computed, type PropType } from 'vue';
 import { type Test } from '@/types';
 import QuestionSimple from './QuestionSimple.vue';
-import QuestionMultiply from './QuestionMultiply.vue';
 import QuestionBoolean from './QuestionBoolean.vue';
 import QuestionText from './QuestionText.vue';
+import QAButton from '@/components/shared/QAButton.vue';
+import QuestionMultiple from './QuestionMultiple.vue';
 
 export default defineComponent({
-  name: 'QuizTest',
   components: {
+    QAButton,
     QuestionSimple,
-    QuestionMultiply,
+    QuestionMultiple,
     QuestionBoolean,
     QuestionText,
   },
@@ -66,7 +70,7 @@ export default defineComponent({
 
     const questionComponentMap = {
       single: 'QuestionSimple',
-      multiple: 'QuestionMultiply',
+      multiple: 'QuestionMultiple',
       boolean: 'QuestionBoolean',
       text: 'QuestionText',
     };
@@ -121,33 +125,7 @@ export default defineComponent({
   margin-bottom: 1rem;
 }
 
-.answers-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 1rem;
-}
-
-.answers-list li {
-  background: #f3f3f3;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.3s;
-}
-
-.answers-list li:hover {
-  background-color: #e0e0e0;
-}
-
-.answers-list li.selected {
-  background-color: #4f46e5;
-  color: white;
-  font-weight: 700;
-}
-
-button {
+.quiz-test__restart-button {
   background-color: #4f46e5;
   color: white;
   border: none;
@@ -155,10 +133,10 @@ button {
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 
-button:disabled {
+.quiz-test__restart-button:disabled {
   background-color: #999;
   cursor: not-allowed;
 }

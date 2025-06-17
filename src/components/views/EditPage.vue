@@ -12,16 +12,18 @@
       :key="question.id" 
       class="edit-page__question-card"
     >
-      <div class="question-card__edit">
-        <button>
-          <i class="mdi mdi-pencil" />
-          Редактировать 
-        </button>
+      <div class="question-card__header">
+        <h3 class="question-card__title">
+          Вопрос: {{ question.question }}
+        </h3>
+        <div class="question-card__edit">
+          <button>
+            <i class="mdi mdi-pencil" />
+            Редактировать 
+          </button>
+        </div>
       </div>
-    
-      <h3 class="question-card__title">
-        Вопрос: {{ question.question }}
-      </h3>
+
       <p class="question-card__type">
         Тип: {{ question.type }}
       </p>
@@ -55,10 +57,9 @@
   </div>
 </template>
 
-
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { allTests } from '@/allTests';
+import { allTests } from '@/resourses/allTests';
 
 export default defineComponent({
   props: {
@@ -104,11 +105,17 @@ export default defineComponent({
   margin-bottom: 25px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
+.question-card__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
 
 .question-card__title {
   font-size: 20px;
   margin-bottom: 10px;
   color: #34495e;
+  max-width: 650px;
 }
 
 .question-card__type {
@@ -141,8 +148,14 @@ export default defineComponent({
   font-weight: bold;
   color: #2c3e50;
 }
-.question-card__edit {
-  margin: 0 auto;
+.question-card__edit button {
+  padding: 5px;
+  background-color: rgba(0, 255, 255, 0.402);
+  border-radius: 10px;
+  transition: all 0.5s ease;
+}
+.question-card__edit button:hover {
+  background-color: rgba(0, 255, 255, 0.605);
 }
 
 </style>

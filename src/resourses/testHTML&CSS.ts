@@ -1,4 +1,4 @@
-import { QuestionType, type Test } from './types';
+import { QuestionType, type Test } from '@/types';
 
 export const htmlCssTest: Test = {
   id: 'html-css-001',

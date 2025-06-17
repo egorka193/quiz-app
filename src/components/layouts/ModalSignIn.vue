@@ -28,36 +28,41 @@
       </p>
 
       <div class="modal-buttons">
-        <button 
+        <QAButton 
           class="btn btn-admin"
           @click="loginAsAdmin"
         >
           Войти
-        </button>
-        <button 
+        </QAButton>
+        <QAButton 
           class="btn btn-guest"
           @click="loginAsGuest"
         >
           Войти как гость
-        </button>
+        </QAButton>
       </div>
 
-      <button 
+      <QAButton 
         class="close"
+        size="small"
         @click="close"
       >
         ×
-      </button>
+      </QAButton>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useUserStore } from './pinia/pinia';
+import { useUserStore } from '@/pinia/pinia';
 import { useRouter } from 'vue-router';
+import QAButton from '../shared/QAButton.vue';
 
 export default defineComponent({
+  components: {
+    QAButton,
+  },
   emits: ['close'],
   setup(props, ctx) {
     const login = ref('');
@@ -68,7 +73,7 @@ export default defineComponent({
     const userStore = useUserStore();
 
     const loginAsAdmin = async () => {
-      const success = userStore.login(login.value, password.value);
+      const success = await userStore.login(login.value, password.value);
       if (success) {
         ctx.emit('close');
         await router.push({ name: 'Admin' });
@@ -115,7 +120,7 @@ export default defineComponent({
 }
 .modal {
   background: #fff;
-  padding: 2rem 2.5rem;
+  padding: 32px 24px;
   border-radius: 16px;
   width: 350px;
   max-width: 90vw;
@@ -151,14 +156,13 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 1.2rem;
+  margin-top: 16px;
 }
 
 .btn {
-  flex: 1;
-  padding: 0.7rem 0;
+  padding: 12px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 16px;
   border-radius: 12px;
   cursor: pointer;
   border: none;
@@ -185,14 +189,15 @@ export default defineComponent({
 
 .close {
   position: absolute;
-  top: 0.7rem;
-  right: 0.7rem;
-  font-size: 1.8rem;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
   background: transparent;
   border: none;
   color: #999;
   cursor: pointer;
   transition: color 0.3s;
+  width: 20px;
 }
 
 .close:hover {

@@ -1,14 +1,13 @@
 <template>
   <div>
     <ul class="answers-list">
-      <li 
-        v-for="(answer, idx) in question.options" 
-        :key="idx" 
-        :class="{ selected: selectedAnswer === answer }"
-        @click="selectAnswer(answer)"
-      >
-        {{ answer }}
-      </li>
+      <QuestionOptionSelect
+        v-for="(answer, idx) in question.options"
+        :key="idx"
+        :label="answer"
+        :isSelected="selectedAnswer === answer"
+        @select="selectAnswer(answer)"
+      />
     </ul>
     <button 
       :disabled="!selectedAnswer"
@@ -21,19 +20,27 @@
 
 <script lang="ts">
 import { defineComponent, type PropType, ref } from 'vue';
+import QuestionOptionSelect from './QuestionOptionSelect.vue';
+import type { SingleQuestion } from '@/types';
 
 export default defineComponent({
-  name: 'QuestionSingle',
+  components: {
+    QuestionOptionSelect,
+  },
   props: {
     question: {
-      type: Object as PropType<{
-        options: string[],
-        correctAnswer: string
-      }>,
+      type: Object as PropType<SingleQuestion>,
       required: true,
     },
   },
-  emits: ['submit'],
+  emits: {
+    submit: (payload: { isCorrect: boolean; answer: string | null }) => {
+      return (
+        typeof payload.isCorrect === 'boolean' &&
+        (typeof payload.answer === 'string' || payload.answer === null)
+      );
+    },
+  },
   setup(props, ctx) {
     const selectedAnswer = ref<string | null>(null);
 

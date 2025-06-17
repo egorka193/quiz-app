@@ -23,28 +23,33 @@
       </div>
       <router-link
         class="quiz-card__button"
-        :to="`/test/${test.id}`"
+        :to="{ name: RoutesNames.Test, params: { id: test.id }}"
       >
         Start Quiz →
       </router-link>
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
 import type { Test } from '@/types';
+import { RoutesNames } from '@/router/types';
 
 export default defineComponent({
-  name: 'QuizzCard',
   props: {
     test: {
       type: Object as PropType<Test>,
       required: true,
     },
   },
+  setup() {
+    return {
+      RoutesNames,
+    };
+  },
 });
 </script>
-
 
 <style scoped>
 .quiz-card {

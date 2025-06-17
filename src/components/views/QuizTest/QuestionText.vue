@@ -16,18 +16,23 @@
 
 <script lang="ts">
 import { defineComponent, type PropType, ref, computed } from 'vue';
+import type { TextQuestion } from '@/types';
 
 export default defineComponent({
-  name: 'QuestionText',
   props: {
     question: {
-      type: Object as PropType<{
-        correctAnswer: string;
-      }>,
+      type: Object as PropType<TextQuestion>,
       required: true,
     },
   },
-  emits: ['submit'],
+  emits: {
+    submit: (payload: { isCorrect: boolean; answer: string }) => {
+      return (
+        typeof payload.isCorrect === 'boolean' &&
+        typeof payload.answer === 'string'
+      );
+    },
+  },
   setup(props, ctx) {
     const textAnswer = ref('');
 

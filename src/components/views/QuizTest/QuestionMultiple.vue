@@ -1,14 +1,13 @@
 <template>
   <div>
     <ul class="answers-list">
-      <li 
-        v-for="(option, idx) in question.options" 
-        :key="idx" 
-        :class="{ selected: selectedAnswers.has(option) }"
-        @click="toggleAnswer(option)"
-      >
-        {{ option }}
-      </li>
+      <QuestionOptionSelect
+        v-for="(option, idx) in question.options"
+        :key="idx"
+        :label="option"
+        :isSelected="selectedAnswers.has(option)"
+        @select="toggleAnswer(option)"
+      />
     </ul>
     <button 
       :disabled="selectedAnswers.size === 0" 
@@ -21,19 +20,28 @@
 
 <script lang="ts">
 import { defineComponent, type PropType, ref } from 'vue';
+import QuestionOptionSelect from './QuestionOptionSelect.vue';
+import type { MultipleQuestion } from '@/types';
 
 export default defineComponent({
-  name: 'QuestionMultiple',
+  components: {
+    QuestionOptionSelect,
+  },
   props: {
     question: {
-      type: Object as PropType<{
-        options: string[];
-        correctAnswer: string[]; 
-      }>,
+      type: Object as PropType<MultipleQuestion>,
       required: true,
     },
   },
-  emits: ['submit'],
+  emits: {
+    submit: (payload: { isCorrect: boolean; answer: string[] }) => {
+      return (
+        typeof payload.isCorrect === 'boolean' &&
+        Array.isArray(payload.answer) &&
+        payload.answer.every(item => typeof item === 'string')
+      );
+    },
+  },
   setup(props, ctx) {
     const selectedAnswers = ref(new Set<string>());
 

@@ -3,6 +3,7 @@
     <RouterView />
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 
@@ -15,6 +16,6 @@ export default defineComponent({
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 7px;
 }
 </style>

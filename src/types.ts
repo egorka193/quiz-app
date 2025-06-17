@@ -38,7 +38,9 @@ interface BooleanQuestion extends BaseQuestion {
 }
 export type Question = SingleQuestion | MultipleQuestion | TextQuestion | BooleanQuestion
 
-export type UserAnswer = {
-  questionId: string;
-  answer: string | string[] | boolean;
+export type {
+  SingleQuestion,
+  MultipleQuestion,
+  TextQuestion,
+  BooleanQuestion,
 };

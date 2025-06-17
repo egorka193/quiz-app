@@ -1,19 +1,19 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import './style.css';
-import App from './App.vue';
-import router from './router';
+import '@/assets/style.css';
+import App from '@/App.vue';
+import router from '@/router';
 import { createVuetify } from 'vuetify';
-import { useUserStore } from './pinia/pinia';
+import { useUserStore } from '@/pinia/pinia';
 
 import 'vuetify/styles'; // основные стили
 import '@mdi/font/css/materialdesignicons.css'; // иконки MDI
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
 
 const vuetify = createVuetify({
-  components: {
-  },
-  directives: {
-  },
+  components,
+  directives,
   icons: {
     defaultSet: 'mdi',
   },

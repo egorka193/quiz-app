@@ -10,7 +10,7 @@
       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam aut enim ab distinctio repudiandae eaque beatae excepturi cumque voluptatem obcaecati.
     </span>
     <div class="home-actions">
-      <RouterLink to="/quizzes">
+      <RouterLink :to="{ name: RoutesNames.Quizes }">
         Explore Quizzes &rarr;
       </RouterLink>
     </div>
@@ -20,13 +20,19 @@
     >
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { RoutesNames } from '@/router/types';
 
 export default defineComponent({
+  setup() {
+    return {
+      RoutesNames,
+    };
+  },
 });
 </script>
-
 
 <style scoped>
 .home-page {
@@ -34,40 +40,39 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
   text-align: center;
 }
 
 .home-image {
   max-width: 100%;
   height: 300px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
   border-radius: 12px;
 }
 .home-subtitle {
-  font-size: 1.5rem;
+  font-size: 24px;
   color: #2dc123;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .home-title {
   font-weight: 700;
-  font-size: 5rem;
+  font-size: 80px;
   color: #111827;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .home-description {
   font-size: 20px;
   max-width: 600px;
-  font-size: 1.5rem;
+  font-size: 24px;
   color: #000000;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .home-actions {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .home-actions a {
