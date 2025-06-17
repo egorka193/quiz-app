@@ -1,27 +1,19 @@
-import { LocalStorageKeys, getUserFromLs } from '@/services/types';
-
-export interface User {
-  name: string;
-  role: 'admin' | 'guest';
-}
+import { LocalStorageKeys, type User } from '@/services/types';
+import { fakeApiRequest, getUserFromLs } from '@/services/utils';
 
 export const checkInfo = async (login: string, password: string): Promise<User | null> => {
-  const admin = await getUserFromLs(LocalStorageKeys.Admin);
-  const user = await getUserFromLs(LocalStorageKeys.User);
+  const adminData = getUserFromLs(LocalStorageKeys.Admin);
+  const userData = getUserFromLs(LocalStorageKeys.User);
 
-  if (login === admin.login && password === admin.password) {
-    return {
-      name: 'Admin',
-      role: 'admin',
-    };
+  if (adminData && login === adminData.login && password === adminData.password) {
+    return fakeApiRequest({ name: 'Admin', role: 'admin' });
   }
 
-  if (login === user.login && password === user.password) {
-    return {
-      name: 'User',
-      role: 'guest',
-    };
+  if (userData && login === userData.login && password === userData.password) {
+    return fakeApiRequest({ name: 'User', role: 'guest' });
   }
 
   return null;
 };
+
+
