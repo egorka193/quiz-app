@@ -26,7 +26,8 @@ export const useUserStore = defineStore('user', {
     },
     logout() {
       this.user = null;
-      localStorage.removeItem(LocalStorageKeys.User);
+      console.log(LocalStorageKeys.User);
+      localStorage.removeItem(LocalStorageKeys.CurrentUser);
     },
     initFromLocalStorage() {
       const saved = getCurrentUserFromLs();

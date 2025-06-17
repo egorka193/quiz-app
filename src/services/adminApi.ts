@@ -10,7 +10,7 @@ export const checkInfo = async (login: string, password: string): Promise<User |
   }
 
   if (userData && login === userData.login && password === userData.password) {
-    return fakeApiRequest({ name: 'User', role: 'guest' });
+    return fakeApiRequest({ name: 'User', role: 'user' });
   }
 
   return null;

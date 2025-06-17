@@ -96,7 +96,6 @@ export default defineComponent({
 });
 </script>
 
-
 <style scoped>
 .header{
   background-color: #fff;

@@ -1,12 +1,5 @@
 <template>
-  <div class="edit-page">
-    <h2 class="edit-page__title">
-      {{ test?.title }}
-    </h2>
-    <p class="edit-page__description">
-      {{ test?.description }}
-    </p>
-
+  <div>
     <div 
       v-for="question in test?.questions" 
       :key="question.id" 
@@ -14,51 +7,114 @@
     >
       <div class="question-card__header">
         <h3 class="question-card__title">
-          Вопрос: {{ question.question }}
+          Вопрос:
+          <template v-if="isEditing(question.id)">
+            <input v-model="question.question" class="edit-input" />
+          </template>
+          <template v-else>
+            {{ question.question }}
+          </template>
         </h3>
         <div class="question-card__edit">
-          <button>
-            <i class="mdi mdi-pencil" />
-            Редактировать 
+          <button v-if="!isEditing(question.id)" @click="startEdit(question.id)">
+            <i class="mdi mdi-pencil" /> Редактировать
+          </button>
+          <button v-else @click="saveEdit">
+            <i class="mdi mdi-content-save" /> Сохранить
           </button>
         </div>
       </div>
 
       <p class="question-card__type">
-        Тип: {{ question.type }}
+        Тип:
+        <template v-if="isEditing(question.id)">
+          <select v-model="question.type" class="edit-input">
+            <option value="single">Один ответ</option>
+            <option value="multiple">Несколько ответов</option>
+            <option value="boolean">Булевое значение</option>
+            <option value="text">Текстовое значение</option>
+          </select>
+        </template>
+        <template v-else>
+          {{ question.type }}
+        </template>
       </p>
 
-      <div 
-        v-if="question.options" 
-        class="question-card__options">
-        <p class="question-card__options-title">
-          Варианты:
-        </p>
+      <div v-if="question.options" class="question-card__options">
+        <p class="question-card__options-title">Варианты:</p>
         <ul class="question-card__options-list">
           <li 
             v-for="(opt, i) in question.options" 
-            :key="i"
+            :key="i" 
             class="question-card__option"
           >
-            {{ opt }}
+            <template v-if="isEditing(question.id)">
+              <input 
+                v-model="question.options[i]" 
+                class="edit-input" 
+              />
+            </template>
+            <template v-else>
+              {{ opt }}
+            </template>
           </li>
         </ul>
       </div>
-
       <div class="question-card__answer">
         <p class="question-card__answer-label">
           Правильный ответ:
         </p>
-        <span class="question-card__answer-value">
-          {{ Array.isArray(question.correctAnswer) ? question.correctAnswer.join(', ') : question.correctAnswer }}
-        </span>
+        <template v-if="isEditing(question.id)">
+          <!-- Один ответ -->
+          <input
+            v-if="question.type === 'single'"
+            v-model="question.correctAnswer"
+            class="edit-input"
+            placeholder="Введите правильный ответ"
+          />
+
+          <!-- Текстовый ответ -->
+          <textarea
+            v-else-if="question.type === 'text'"
+            v-model="question.correctAnswer"
+            class="edit-input"
+            placeholder="Введите правильный текст"
+            rows="3"
+          />
+
+          <!-- Несколько ответов -->
+          <div v-else-if="question.type === 'multiple'">
+            <input
+              v-for="(ans, i) in question.correctAnswer"
+              :key="i"
+              v-model="question.correctAnswer[i]"
+              class="edit-input"
+              placeholder="Один из правильных вариантов"
+            />
+          </div>
+
+          <!-- Булевый ответ -->
+          <select
+            v-else-if="question.type === 'boolean'"
+            v-model="question.correctAnswer"
+            class="edit-input"
+          >
+            <option :value="true">Да</option>
+            <option :value="false">Нет</option>
+          </select>
+        </template>
+        <template v-else>
+          <span class="question-card__answer-value">
+            {{ Array.isArray(question.correctAnswer) ? question.correctAnswer.join(', ') : question.correctAnswer }}
+          </span>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { allTests } from '@/resourses/allTests';
 
 export default defineComponent({
@@ -69,16 +125,39 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const test = allTests.find(t => t.id === props.id);
+    const test = ref(allTests.find(t => t.id === props.id));
+    const editingQuestionId = ref<string | null>(null);
+
+    const startEdit = (id: string) => {
+      editingQuestionId.value = id;
+    };
+
+    const saveEdit = () => {
+      editingQuestionId.value = null;
+    };
+
+    const isEditing = (id: string) => editingQuestionId.value === id;
 
     return {
       test,
+      editingQuestionId,
+      startEdit,
+      saveEdit,
+      isEditing,
     };
   },
 });
 </script>
 
-<style scoped>
+<style>
+.edit-input {
+  padding: 6px;
+  font-size: 14px;
+  margin: 4px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+}
 .edit-page {
   padding: 30px;
   max-width: 900px;

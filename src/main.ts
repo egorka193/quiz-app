@@ -29,6 +29,6 @@ app.use(router);
 
 const userStore = useUserStore();
 initDefaultUsers();
-userStore.initFromLocalStorage();
+userStore.logout(); 
 
 app.mount('#app');

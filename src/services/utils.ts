@@ -17,13 +17,14 @@ export const getFakeDelay = () => {
 const defaultAdmin: UserData = { login: 'Admin', password: '1234' };
 const defaultUser: UserData = { login: 'user', password: '1111' };
 const defaultUsers: UserData[] = [defaultAdmin, defaultUser];
-const userKeys: LocalStorageKeys[] = [LocalStorageKeys.Admin, LocalStorageKeys.User];
+const userKeys: (LocalStorageKeys.Admin | LocalStorageKeys.User)[] = [
+  LocalStorageKeys.Admin,
+  LocalStorageKeys.User,
+];
 
-export const getUserFromLs = (key: LocalStorageKeys): UserData | null => {
+export const getUserFromLs = (key: LocalStorageKeys.Admin | LocalStorageKeys.User): UserData | null => {
   const lsResults = localStorage.getItem(key);
-  if (!lsResults) {
-    return null; 
-  }
+  if (!lsResults) return null;
   try {
     return JSON.parse(lsResults) as UserData;
   } catch {
@@ -31,11 +32,18 @@ export const getUserFromLs = (key: LocalStorageKeys): UserData | null => {
   }
 };
 
-export const setUserInLs = (key: LocalStorageKeys, data: UserData) => {
-  localStorage.setItem(key, JSON.stringify(data));
-};
 export const setCurrentUser = (user: User) => {
-  localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
+  localStorage.setItem(LocalStorageKeys.CurrentUser, JSON.stringify(user));
+};
+
+export const getCurrentUserFromLs = (): User | null => {
+  const raw = localStorage.getItem(LocalStorageKeys.CurrentUser);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as User;
+  } catch {
+    return null;
+  }
 };
 
 export const initDefaultUsers = () => {
@@ -45,15 +53,4 @@ export const initDefaultUsers = () => {
       localStorage.setItem(key, JSON.stringify(user));
     }
   });
-};
-
-export const getCurrentUserFromLs = (): User | null => {
-  const raw = localStorage.getItem(LocalStorageKeys.User);
-  if (!raw) return null;
-
-  try {
-    return JSON.parse(raw) as User;
-  } catch {
-    return null;
-  }
 };

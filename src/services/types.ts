@@ -1,7 +1,8 @@
 
 export enum LocalStorageKeys {
   Admin = 'adminData',  
-  User = 'userData',   
+  User = 'userData',
+  CurrentUser = 'currentUser',
 }
 export type UserData = {
   login: string;
@@ -10,5 +11,5 @@ export type UserData = {
 
 export interface User {
   name: string;
-  role: 'admin' | 'guest';
+  role: 'admin' | 'guest' | 'user';
 }
