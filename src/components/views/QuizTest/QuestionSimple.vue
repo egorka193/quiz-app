@@ -49,7 +49,7 @@ export default defineComponent({
     };
 
     const submitAnswer = () => {
-      const isCorrect = selectedAnswer.value === props.question.correctAnswer;
+      const isCorrect = selectedAnswer.value === props.question.correctAnswer[0];
       ctx.emit('submit', { isCorrect, answer: selectedAnswer.value });
     };
 

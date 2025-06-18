@@ -20,7 +20,7 @@ interface BaseQuestion {
 }
 interface SingleQuestion extends BaseQuestion {
   type: QuestionType.single;
-  correctAnswer: string;
+  correctAnswer: [string];
   options: string[];
 }
 interface MultipleQuestion extends BaseQuestion {
@@ -30,11 +30,11 @@ interface MultipleQuestion extends BaseQuestion {
 }
 interface TextQuestion extends BaseQuestion {
   type: QuestionType.text;
-  correctAnswer: string;
+  correctAnswer: [string];
 }
 interface BooleanQuestion extends BaseQuestion {
   type: QuestionType.boolean;
-  correctAnswer: boolean;
+  correctAnswer: [boolean];
 }
 export type Question = SingleQuestion | MultipleQuestion | TextQuestion | BooleanQuestion
 

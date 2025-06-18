@@ -11,7 +11,7 @@ export const vueTest: Test = {
       type: QuestionType.single,
       question: 'Какой директивой связывается значение input с данными компонента?',
       options: ['v-if', 'v-model', 'v-bind', 'v-for'],
-      correctAnswer: 'v-model',
+      correctAnswer: ['v-model'],
     },
     {
       id: 'v2',
@@ -24,13 +24,13 @@ export const vueTest: Test = {
       id: 'v3',
       type: QuestionType.boolean,
       question: 'Во Vue 3 можно использовать Composition API.',
-      correctAnswer: true,
+      correctAnswer: [true],
     },
     {
       id: 'v4',
       type: QuestionType.text,
       question: 'Как называется функция для реактивных переменных в Composition API?',
-      correctAnswer: 'ref',
+      correctAnswer: ['ref'],
     },
   ],
 };

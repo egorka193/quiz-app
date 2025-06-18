@@ -28,7 +28,11 @@
       <p class="question-card__type">
         Тип:
         <template v-if="isEditing(question.id)">
-          <select v-model="question.type" class="edit-input">
+          <select 
+            v-model="question.type" 
+            class="edit-input"
+            @change="onTypeChange(question)"
+            >
             <option value="single">Один ответ</option>
             <option value="multiple">Несколько ответов</option>
             <option value="boolean">Булевое значение</option>
@@ -68,7 +72,7 @@
           <!-- Один ответ -->
           <input
             v-if="question.type === 'single'"
-            v-model="question.correctAnswer"
+            v-model="question.correctAnswer[0]"
             class="edit-input"
             placeholder="Введите правильный ответ"
           />
@@ -76,7 +80,7 @@
           <!-- Текстовый ответ -->
           <textarea
             v-else-if="question.type === 'text'"
-            v-model="question.correctAnswer"
+            v-model="question.correctAnswer[0]"
             class="edit-input"
             placeholder="Введите правильный текст"
             rows="3"
@@ -96,7 +100,7 @@
           <!-- Булевый ответ -->
           <select
             v-else-if="question.type === 'boolean'"
-            v-model="question.correctAnswer"
+            v-model="question.correctAnswer[0]"
             class="edit-input"
           >
             <option :value="true">Да</option>
@@ -114,8 +118,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { allTests } from '@/resourses/allTests';
+import { computed, defineComponent, onMounted, ref } from 'vue';
+import { useTestsStore } from '@/pinia/tests';
+import { QuestionType, type Question } from '@/types';
 
 export default defineComponent({
   props: {
@@ -125,7 +130,9 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const test = ref(allTests.find(t => t.id === props.id));
+    const store = useTestsStore();
+
+    const test = computed(() => store.tests.find(t => t.id === props.id));
     const editingQuestionId = ref<string | null>(null);
 
     const startEdit = (id: string) => {
@@ -133,8 +140,49 @@ export default defineComponent({
     };
 
     const saveEdit = () => {
+      if (test.value) {
+        store.updateTest(test.value);
+      }
       editingQuestionId.value = null;
     };
+
+    function onTypeChange(question: Question) {
+      if (question.type === QuestionType.single) {
+        if (!question.options || question.options.length === 0) {
+          question.options = [''];
+        }
+        if (typeof question.correctAnswer === 'string') {
+          question.correctAnswer = [question.correctAnswer];
+        } else {
+          question.correctAnswer = [''];
+        }
+      } else if (question.type === QuestionType.multiple) {
+        if (!question.options || question.options.length === 0) {
+          question.options = ['', '', '', ''];
+        }
+        if (!Array.isArray(question.correctAnswer)) {
+          question.correctAnswer = [];
+        }
+        while (question.correctAnswer.length < question.options.length) {
+          question.correctAnswer.push('');
+        }
+      } else if (question.type === QuestionType.boolean) {
+        question.options = [];
+        if (typeof question.correctAnswer !== 'boolean') {
+          question.correctAnswer = [true];
+        }
+      } else if (question.type === QuestionType.text) {
+        question.options = [];
+        if (typeof question.correctAnswer !== 'string') {
+          question.correctAnswer = [''];
+        }
+      }
+    }
+
+
+    onMounted(() => {
+      store.loadTests();
+    });
 
     const isEditing = (id: string) => editingQuestionId.value === id;
 
@@ -144,6 +192,7 @@ export default defineComponent({
       startEdit,
       saveEdit,
       isEditing,
+      onTypeChange,
     };
   },
 });

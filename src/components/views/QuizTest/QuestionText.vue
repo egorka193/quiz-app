@@ -40,7 +40,7 @@ export default defineComponent({
 
     const submitAnswer = () => {
       const isCorrect = textAnswer.value.trim().toLowerCase() 
-        === props.question.correctAnswer.trim().toLowerCase();
+        === props.question.correctAnswer[0].trim().toLowerCase();
       ctx.emit('submit', { isCorrect, answer: textAnswer.value });
     };
 

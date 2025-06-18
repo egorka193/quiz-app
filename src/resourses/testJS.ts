@@ -11,7 +11,7 @@ export const jsTest: Test = {
       type: QuestionType.single,
       question: 'Что вернёт выражение: typeof null?',
       options: ['object', 'null', 'undefined', 'number'],
-      correctAnswer: 'object',
+      correctAnswer: ['object'],
     },
     {
       id: 'j2',
@@ -24,13 +24,13 @@ export const jsTest: Test = {
       id: 'j3',
       type: QuestionType.boolean,
       question: 'Оператор \'===\' сравнивает и тип, и значение?',
-      correctAnswer: true,
+      correctAnswer: [true],
     },
     {
       id: 'j4',
       type: QuestionType.text,
       question: 'Как называется метод, преобразующий JSON-строку в объект?',
-      correctAnswer: 'JSON.parse',
+      correctAnswer: ['JSON.parse'],
     },
   ],
 };

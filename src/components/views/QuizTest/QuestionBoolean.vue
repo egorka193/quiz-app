@@ -52,7 +52,7 @@ export default defineComponent({
     const submitAnswer = () => {
       if (!canSubmit.value) return;
 
-      const isCorrect = canSubmit.value === props.question.correctAnswer;
+      const isCorrect = canSubmit.value === props.question.correctAnswer[0];
       ctx.emit('submit', { isCorrect, answer: canSubmit.value });
     };
 

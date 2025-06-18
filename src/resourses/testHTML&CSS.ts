@@ -11,7 +11,7 @@ export const htmlCssTest: Test = {
       type: QuestionType.single,
       question: 'Какой тег используется для создания ссылки в HTML?',
       options: ['<a>', '<link>', '<url>', '<href>'],
-      correctAnswer: '<a>',
+      correctAnswer: ['<a>'],
     },
     {
       id: 'h2',
@@ -24,13 +24,13 @@ export const htmlCssTest: Test = {
       id: 'h3',
       type: QuestionType.boolean,
       question: 'Свойство `margin` может принимать отрицательные значения.',
-      correctAnswer: true,
+      correctAnswer: [true],
     },
     {
       id: 'h4',
       type: QuestionType.text,
       question: 'Как называется свойство CSS для установки фона?',
-      correctAnswer: 'background',
+      correctAnswer: ['background'],
     },
   ],
 };
