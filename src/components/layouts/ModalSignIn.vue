@@ -1,67 +1,16 @@
 <template>
-  <div 
-    class="modal-overlay"
-    @click.self="close"
-  >
-    <div class="modal">
-      <h2 class="modal-title">
-        Вход
-      </h2>
-
-      <input 
-        v-model="login"
-        placeholder="Логин" 
-        class="modal-input"
-      />
-      <input 
-        v-model="password" 
-        type="password" 
-        placeholder="Пароль" 
-        class="modal-input"
-      />
-
-      <p 
-        v-if="errorMessage"
-        class="modal-error"
-      >
-        {{ errorMessage }}
-      </p>
-
-      <div class="modal-buttons">
-        <QAButton 
-          class="btn btn-admin"
-          @click="loginAsAdmin"
-        >
-          Войти
-        </QAButton>
-        <QAButton 
-          class="btn btn-guest"
-          @click="loginAsGuest"
-        >
-          Войти как гость
-        </QAButton>
-      </div>
-
-      <QAButton 
-        class="close"
-        size="small"
-        @click="close"
-      >
-        ×
-      </QAButton>
-    </div>
-  </div>
+  <QAModal />
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useUserStore } from '@/pinia/pinia';
 import { useRouter } from 'vue-router';
-import QAButton from '../shared/QAButton.vue';
+import QAModal from '../shared/QAModal.vue';
 
 export default defineComponent({
   components: {
-    QAButton,
+    QAModal,
   },
   emits: ['close'],
   setup(props, ctx) {

@@ -5,20 +5,25 @@
       type="text"
       placeholder="Введите ответ"
     />
-    <button 
+    <QAButton 
+      class="answers-list__btn" 
       :disabled="!canSubmit"
       @click="submitAnswer"
     >
       Ответить
-    </button>
+    </QAButton>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType, ref, computed } from 'vue';
 import type { TextQuestion } from '@/types';
+import QAButton from '@/components/shared/QAButton.vue';
 
 export default defineComponent({
+  components: {
+    QAButton,
+  },
   props: {
     question: {
       type: Object as PropType<TextQuestion>,

@@ -10,7 +10,7 @@ import 'vuetify/styles'; // основные стили
 import '@mdi/font/css/materialdesignicons.css'; // иконки MDI
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
-import { initDefaultUsers } from './services/utils';
+import { initDefaultUsers } from './services/adminApi';
 
 const vuetify = createVuetify({
   components,
@@ -28,7 +28,7 @@ app.use(pinia);
 app.use(router);
 
 const userStore = useUserStore();
+userStore.initializeUser();
 initDefaultUsers();
-userStore.logout(); 
 
 app.mount('#app');

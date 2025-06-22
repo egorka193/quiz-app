@@ -9,12 +9,13 @@
         @select="toggleAnswer(option)"
       />
     </ul>
-    <button 
+    <QAButton 
+      class="answers-list__btn" 
       :disabled="selectedAnswers.size === 0" 
       @click="submitAnswer"
     >
       Ответить
-    </button>
+    </QAButton>
   </div>
 </template>
 
@@ -22,10 +23,12 @@
 import { defineComponent, type PropType, ref } from 'vue';
 import QuestionOptionSelect from './QuestionOptionSelect.vue';
 import type { MultipleQuestion } from '@/types';
+import QAButton from '@/components/shared/QAButton.vue';
 
 export default defineComponent({
   components: {
     QuestionOptionSelect,
+    QAButton,
   },
   props: {
     question: {
@@ -101,7 +104,7 @@ export default defineComponent({
   border-color: #4338ca;
 }
 
-button {
+.answers-list__btn {
   background-color: #4f46e5;
   color: white;
   border: none;
@@ -112,7 +115,7 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:disabled {
+.answers-list__btn:disabled {
   background-color: #a1a1aa;
   cursor: not-allowed;
 }

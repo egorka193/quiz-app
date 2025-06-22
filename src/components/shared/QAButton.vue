@@ -1,5 +1,5 @@
 <template>
-  <v-btn @click="handleClick">
+  <v-btn>
     <slot />
   </v-btn>
 </template>
@@ -8,11 +8,6 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  methods: {
-    handleClick() {
-      console.log('Кнопка нажата!');
-    },
-  },
 });
 </script>
 

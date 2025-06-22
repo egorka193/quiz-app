@@ -26,13 +26,12 @@ export const useUserStore = defineStore('user', {
     },
     logout() {
       this.user = null;
-      console.log(LocalStorageKeys.User);
       localStorage.removeItem(LocalStorageKeys.CurrentUser);
     },
-    initFromLocalStorage() {
-      const saved = getCurrentUserFromLs();
-      if (saved) {
-        this.user = saved;
+    initializeUser() {
+      const savedUser = getCurrentUserFromLs();
+      if (savedUser) {
+        this.user = savedUser;
       }
     },
   },

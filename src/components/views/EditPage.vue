@@ -16,12 +16,18 @@
           </template>
         </h3>
         <div class="question-card__edit">
-          <button v-if="!isEditing(question.id)" @click="startEdit(question.id)">
+          <QAButton 
+            v-if="!isEditing(question.id)"
+            @click="startEdit(question.id)"
+          >
             <i class="mdi mdi-pencil" /> Редактировать
-          </button>
-          <button v-else @click="saveEdit">
+          </QAButton>
+          <QAButton 
+            v-else
+            @click="saveEdit"
+          >
             <i class="mdi mdi-content-save" /> Сохранить
-          </button>
+          </QAButton>
         </div>
       </div>
 
@@ -32,7 +38,7 @@
             v-model="question.type" 
             class="edit-input"
             @change="onTypeChange(question)"
-            >
+          >
             <option value="single">Один ответ</option>
             <option value="multiple">Несколько ответов</option>
             <option value="boolean">Булевое значение</option>
@@ -69,7 +75,6 @@
           Правильный ответ:
         </p>
         <template v-if="isEditing(question.id)">
-          <!-- Один ответ -->
           <input
             v-if="question.type === 'single'"
             v-model="question.correctAnswer[0]"
@@ -77,7 +82,6 @@
             placeholder="Введите правильный ответ"
           />
 
-          <!-- Текстовый ответ -->
           <textarea
             v-else-if="question.type === 'text'"
             v-model="question.correctAnswer[0]"
@@ -86,18 +90,28 @@
             rows="3"
           />
 
-          <!-- Несколько ответов -->
           <div v-else-if="question.type === 'multiple'">
-            <input
+            <div 
               v-for="(ans, i) in question.correctAnswer"
               :key="i"
-              v-model="question.correctAnswer[i]"
-              class="edit-input"
-              placeholder="Один из правильных вариантов"
-            />
+              class="answer-multiple-item"
+            >
+              <input
+                v-model="question.correctAnswer[i]"
+                class="edit-input"
+                placeholder="Один из правильных вариантов"
+              />
+              <button @click="removeCorrectAnswer(question, i)" class="remove-btn">
+                <i class="mdi mdi-trash-can" />
+                Удалить
+              </button>
+            </div>
+            <button @click="addCorrectAnswer(question)" class="add-btn">
+              <i class="mdi mdi-plus" /> 
+              Добавить ответ
+            </button>
           </div>
 
-          <!-- Булевый ответ -->
           <select
             v-else-if="question.type === 'boolean'"
             v-model="question.correctAnswer[0]"
@@ -121,8 +135,12 @@
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useTestsStore } from '@/pinia/tests';
 import { QuestionType, type Question } from '@/types';
+import QAButton from '../shared/QAButton.vue';
 
 export default defineComponent({
+  components: {
+    QAButton,
+  },
   props: {
     id: {
       type: String,
@@ -137,6 +155,14 @@ export default defineComponent({
 
     const startEdit = (id: string) => {
       editingQuestionId.value = id;
+    };
+
+    const addCorrectAnswer = (question: Question) => {
+      question.correctAnswer.push('');
+    };
+
+    const removeCorrectAnswer = (question: Question, index: number) => {
+      question.correctAnswer.splice(index, 1);
     };
 
     const saveEdit = () => {
@@ -180,8 +206,8 @@ export default defineComponent({
     }
 
 
-    onMounted(() => {
-      store.loadTests();
+    onMounted(async () => {
+      await store.loadTests();
     });
 
     const isEditing = (id: string) => editingQuestionId.value === id;
@@ -193,6 +219,8 @@ export default defineComponent({
       saveEdit,
       isEditing,
       onTypeChange,
+      addCorrectAnswer,
+      removeCorrectAnswer,
     };
   },
 });
@@ -207,24 +235,6 @@ export default defineComponent({
   border-radius: 6px;
   width: 100%;
 }
-.edit-page {
-  padding: 30px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.edit-page__title {
-  font-size: 28px;
-  margin-bottom: 10px;
-  color: #2c3e50;
-}
-
-.edit-page__description {
-  font-size: 16px;
-  margin-bottom: 25px;
-  color: #555;
-}
-
 .edit-page__question-card {
   border: 1px solid #d3dce6;
   background-color: #eef5ff;

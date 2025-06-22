@@ -26,31 +26,24 @@
         >
           <span class="header__username">
             <i class="mdi mdi-account" />
-            {{ userStore.user.name }}
+            <RouterLink :to="{ name: RoutesNames.Admin }">
+              {{ userStore.user.name }}
+            </RouterLink>
           </span>
           <QAButton 
-            class="header__logout" 
-            @click="logout"
+            class="header__logout"
           >
-            <i class="mdi mdi-logout" />
-            Выйти
+            <ModalSignIn
+              @close="closeModal"
+            />
           </QAButton>
         </div>
-
-        <div
+        <ModalSignIn
           v-else
-          class="header__nav-item header__nav-sign-in"
-          @click="openModal"
-        >
-          <i class="mdi mdi-login" />
-          <span>Войти</span>
-        </div>
+          @close="closeModal"
+        />
       </div>
     </div>
-    <ModalSignIn 
-      v-if="showModal"
-      @close="closeModal"
-    />
   </div>
 </template>
 
@@ -58,7 +51,6 @@
 import { defineComponent, ref } from 'vue';
 import ModalSignIn from '@/components/layouts/ModalSignIn.vue';
 import { useUserStore } from '@/pinia/pinia';
-import { useRouter } from 'vue-router';
 import { RoutesNames } from '@/router/types';
 import QAButton from '../shared/QAButton.vue';
 
@@ -70,7 +62,6 @@ export default defineComponent({
   setup() {
     const showModal = ref(false);
     const userStore = useUserStore();
-    const router = useRouter();
 
     const openModal = () => {
       showModal.value = true;
@@ -79,17 +70,11 @@ export default defineComponent({
       showModal.value = false;
     };
 
-    const logout = async () => {
-      userStore.logout();
-      await router.push({ name: 'Home' });
-    };
-
     return {
       openModal,
       showModal,
       closeModal,
       userStore,
-      logout,
       RoutesNames,
     };
   },
@@ -148,5 +133,12 @@ export default defineComponent({
 .header__logout {
   box-shadow: none;
   background-color: rgba(195, 243, 243, 0.071);
+}
+.header__username {
+  display: flex;
+  gap: 10px;
+}
+.v-btn--size-defaul{
+  padding: 0px;
 }
 </style>

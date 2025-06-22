@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia';
 import { allTests } from '@/resourses/allTests';
 import type { Test } from '@/types';
+import { findSaveUsers } from '@/services/utils';
 
 export const useTestsStore = defineStore('tests', {
   state: () => ({
     tests: [] as Test[],
   }),
   actions: {
-    loadTests() {
-      const saved = localStorage.getItem('tests');
+    async loadTests() {
+      const saved = await findSaveUsers();
       if (saved) {
         this.tests = JSON.parse(saved);
       } else {

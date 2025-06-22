@@ -1,33 +1,37 @@
 <template>
-  <div>
-    <ul class="boolean-options">
-      <li
-        :class="{ selected: selected === true }"
-        @click="select(true)"
-      >
-        Да
-      </li>
-      <li
-        :class="{ selected: selected === false }"
-        @click="select(false)"
-      >
-        Нет
-      </li>
+  <div class="question-boolean">
+    <ul class="question-boolean__options">
+      <QuestionOptionSelect 
+        label="Да"
+        :isSelected="selected === true"
+        @select="select(true)"
+      />
+      <QuestionOptionSelect 
+        label="нет"
+        :isSelected="selected === false"
+        @select="select(false)"
+      />
     </ul>
-    <button 
-      :disabled="selected === null"
+    <QAButton 
+      :disabled="!canSubmit"
       @click="submitAnswer"
     >
       Ответить
-    </button>
+    </QAButton>
   </div>
 </template>
 
 <script lang="ts">
 import type { BooleanQuestion } from '@/types';
 import { computed, defineComponent, type PropType, ref } from 'vue';
+import QAButton from '@/components/shared/QAButton.vue';
+import QuestionOptionSelect from './QuestionOptionSelect.vue';
 
 export default defineComponent({
+  components: {
+    QAButton,
+    QuestionOptionSelect,
+  },
   props: {
     question: {
       type: Object as PropType<BooleanQuestion>,
@@ -67,7 +71,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.boolean-options {
+.question-boolean__options {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -76,7 +80,7 @@ export default defineComponent({
   list-style: none;
 }
 
-.boolean-options li {
+.question-boolean__options li {
   flex: 1;
   text-align: center;
   background-color: #f3f4f6;
@@ -88,11 +92,11 @@ export default defineComponent({
   border: 2px solid transparent;
 }
 
-.boolean-options li:hover {
+.question-boolean__options li:hover {
   background-color: #e0e7ff;
 }
 
-.boolean-options li.selected {
+.question-boolean__options li.selected {
   background-color: #4f46e5;
   color: white;
   border-color: #4338ca;
