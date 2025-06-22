@@ -25,7 +25,7 @@ const router = createRouter({
     {
       name: RoutesNames.Edit,
       path: '/edit/:id',
-      component: () => import('@/components/views/EditPage.vue'),
+      component: () => import('@/components/views/EditPage/EditPage.vue'),
       props: true,
     },
     {

@@ -135,7 +135,7 @@
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useTestsStore } from '@/pinia/tests';
 import { QuestionType, type Question } from '@/types';
-import QAButton from '../shared/QAButton.vue';
+import QAButton from '@/components/shared/QAButton.vue';
 
 export default defineComponent({
   components: {
@@ -158,7 +158,9 @@ export default defineComponent({
     };
 
     const addCorrectAnswer = (question: Question) => {
-      question.correctAnswer.push('');
+      if (question.type === QuestionType.multiple) {
+        question.correctAnswer.push('');
+      }
     };
 
     const removeCorrectAnswer = (question: Question, index: number) => {

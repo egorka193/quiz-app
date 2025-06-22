@@ -1,155 +1,124 @@
 <template>
-  <QAModal />
+  <QAModal ref="loginModal">
+    <template #activator="{ open }">
+      <v-btn
+        :class="[isLoggedIn ? 'disabled' : '']"
+        variant="flat"
+        @click="isLoggedIn ? handleLogout() : open()"
+      >
+        <v-icon start>
+          {{ isLoggedIn ? 'mdi-logout' : 'mdi-login' }}
+        </v-icon>
+        {{ isLoggedIn ? 'Выйти' : 'Войти' }}
+      </v-btn>
+    </template>
+
+    <template 
+      v-if="!isLoggedIn"
+      #title
+    >
+      Вход
+    </template>
+
+    <template 
+      v-if="!isLoggedIn"
+      #body
+    >
+      <input 
+        v-model="login"
+        placeholder="Логин" 
+        class="modal-input" 
+      />
+      <input 
+        v-model="password" 
+        type="password" 
+        placeholder="Пароль" 
+        class="modal-input" 
+      />
+      <p 
+        v-if="errorMessage"
+        class="modal-error"
+      >
+        {{ errorMessage }}
+      </p>
+    </template>
+
+    <template 
+      v-if="!isLoggedIn"
+      #actions
+    >
+      <v-btn 
+        text="Войти"
+        @click="handleLogin"
+      />
+      <v-btn 
+        text="Гость"
+        @click="handleGuest" 
+      />
+    </template>
+  </QAModal>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { ref, computed } from 'vue';
+import QAModal from '@/components/shared/QAModal.vue';
 import { useUserStore } from '@/pinia/pinia';
 import { useRouter } from 'vue-router';
-import QAModal from '../shared/QAModal.vue';
 
-export default defineComponent({
-  components: {
-    QAModal,
-  },
-  emits: ['close'],
-  setup(props, ctx) {
+export default {
+  components: { QAModal },
+  setup() {
     const login = ref('');
     const password = ref('');
     const errorMessage = ref('');
+    const loginModal = ref<InstanceType<typeof QAModal> | null>(null);
+    const userStore = useUserStore();
     const router = useRouter();
 
-    const userStore = useUserStore();
+    const isLoggedIn = computed(() => !!userStore.user);
 
-    const loginAsAdmin = async () => {
+    const handleLogin = async () => {
       const success = await userStore.login(login.value, password.value);
       if (success) {
-        ctx.emit('close');
+        loginModal.value?.close();
         await router.push({ name: 'Admin' });
       } else {
         errorMessage.value = 'Неверный логин или пароль';
       }
     };
 
-    const loginAsGuest = () => {
-      userStore.loginAsGuest(); 
-      ctx.emit('close');
+    const handleGuest = () => {
+      userStore.loginAsGuest();
+      loginModal.value?.close();
     };
 
-    const close = () => {
-      ctx.emit('close');
+    const handleLogout = async () => {
+      userStore.logout();
+      await router.push({ name: 'Home' });
     };
 
     return {
       login,
       password,
       errorMessage,
-      close,
-      loginAsAdmin,
-      loginAsGuest,
+      loginModal,
+      isLoggedIn,
+      handleLogin,
+      handleGuest,
+      handleLogout,
     };
   },
-});
+};
 </script>
 
 <style scoped>
+.modal-input {
+  border: 1px solid rgba(128, 128, 128, 0.331);
+  padding: 10px;
+  border-radius: 10px;
+}
 .modal-error {
   color: red;
-  margin: 0.5rem 0;
   text-align: center;
-}
-.modal-overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.modal {
-  background: #fff;
-  padding: 32px 24px;
-  border-radius: 16px;
-  width: 350px;
-  max-width: 90vw;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-  position: relative;
-  transform: translateY(-30px);
-}
-.modal-title {
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  color: #333;
-  text-align: center;
-}
-
-.modal-input {
-  width: 100%;
-  padding: 0.6rem 1rem;
-  margin-bottom: 1rem;
-  border: 1.5px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-  outline: none;
-}
-
-.modal-input:focus {
-  border-color: #00bcd4;
-  box-shadow: 0 0 6px #00bcd4;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.btn {
-  padding: 12px;
-  font-weight: 600;
-  font-size: 16px;
-  border-radius: 12px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s;
-}
-
-.btn-admin {
-  background-color: #00bcd4;
-  color: white;
-}
-
-.btn-admin:hover {
-  background-color: #0097a7;
-}
-
-.btn-guest {
-  background-color: #e0e0e0;
-  color: #555;
-}
-
-.btn-guest:hover {
-  background-color: #bdbdbd;
-}
-
-.close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 16px;
-  background: transparent;
-  border: none;
-  color: #999;
-  cursor: pointer;
-  transition: color 0.3s;
-  width: 20px;
-}
-
-.close:hover {
-  color: #00bcd4;
 }
 </style>

@@ -39,14 +39,4 @@ export default defineComponent({
   background-color: #d3e5ff;
   font-weight: bold;
 }
-li {
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-bottom: 5px;
-}
-li:hover {
-  background-color: #f0f0f0;
-}
 </style>

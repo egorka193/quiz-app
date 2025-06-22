@@ -2,6 +2,7 @@
   <div>
     <ul class="answers-list">
       <QuestionOptionSelect
+        class="answers-list__option"
         v-for="(option, idx) in question.options"
         :key="idx"
         :label="option"
@@ -83,7 +84,7 @@ export default defineComponent({
   margin: 1rem 0;
 }
 
-.answers-list li {
+.answers-list__option {
   background: #f3f4f6;
   border-radius: 8px;
   padding: 10px 15px;
@@ -93,11 +94,11 @@ export default defineComponent({
   border: 2px solid transparent;
 }
 
-.answers-list li:hover {
+.answers-list__option:hover {
   background-color: #e0e7ff;
 }
 
-.answers-list li.selected {
+.answers-list__option.selected {
   background-color: #4f46e5;
   color: white;
   font-weight: 600;
@@ -115,7 +116,7 @@ export default defineComponent({
   transition: background-color 0.3s ease;
 }
 
-.answers-list__btn:disabled {
+:disabled {
   background-color: #a1a1aa;
   cursor: not-allowed;
 }

@@ -2,11 +2,13 @@
   <div class="question-boolean">
     <ul class="question-boolean__options">
       <QuestionOptionSelect 
+        class="question-boolean__option"
         label="Да"
         :isSelected="selected === true"
         @select="select(true)"
       />
       <QuestionOptionSelect 
+        class="question-boolean__option"
         label="нет"
         :isSelected="selected === false"
         @select="select(false)"
@@ -79,26 +81,24 @@ export default defineComponent({
   margin: 1rem 0;
   list-style: none;
 }
-
-.question-boolean__options li {
-  flex: 1;
-  text-align: center;
-  background-color: #f3f4f6;
+.question-boolean__option {
+  background: #f3f4f6;
   border-radius: 8px;
-  padding: 12px 0;
-  font-weight: 600;
+  padding: 10px 15px;
+  margin-bottom: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   border: 2px solid transparent;
 }
 
-.question-boolean__options li:hover {
+.question-boolean__option:hover {
   background-color: #e0e7ff;
 }
 
-.question-boolean__options li.selected {
+.question-boolean__option.selected {
   background-color: #4f46e5;
   color: white;
+  font-weight: 600;
   border-color: #4338ca;
 }
 
