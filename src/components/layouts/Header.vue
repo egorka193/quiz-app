@@ -30,13 +30,9 @@
               {{ userStore.user.name }}
             </RouterLink>
           </span>
-          <QAButton 
-            class="header__logout"
-          >
-            <ModalSignIn
-              @close="closeModal"
-            />
-          </QAButton>
+          <ModalSignIn
+            @close="closeModal"
+          />
         </div>
         <ModalSignIn
           v-else
@@ -52,12 +48,10 @@ import { defineComponent, ref } from 'vue';
 import ModalSignIn from '@/components/layouts/ModalSignIn.vue';
 import { useUserStore } from '@/pinia/pinia';
 import { RoutesNames } from '@/router/types';
-import QAButton from '../shared/QAButton.vue';
 
 export default defineComponent({
   components: {
     ModalSignIn,
-    QAButton,
   },
   setup() {
     const showModal = ref(false);
@@ -111,7 +105,7 @@ export default defineComponent({
   align-items: center;
   gap: 10px;
   background-color: rgba(195, 243, 243, 0.7);
-  padding: 6px 12px;
+  padding: 0 5px;
   border-radius: 10px;
   cursor: pointer;
 }

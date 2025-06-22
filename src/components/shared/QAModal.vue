@@ -17,7 +17,7 @@
       <v-card-title class="modal-title">
         <div class="title-content">
           <slot name="title">
-            Модальное окно
+            {{ title }}
           </slot>
         </div>
         <v-btn 
@@ -59,6 +59,10 @@ export default defineComponent({
       type: [String, Number],
       default: 500,
     },
+    title: {
+      type: String,
+      default: 'Заголовок',
+    },
   },
   setup() {
     const isActive = ref(false);
@@ -85,10 +89,5 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.v-card-text {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 </style>

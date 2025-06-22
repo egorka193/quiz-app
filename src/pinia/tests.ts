@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { allTests } from '@/resourses/allTests';
 import type { Test } from '@/types';
-import { findSaveUsers } from '@/services/utils';
+import { findSaveTests } from '@/services/testsApi';
+import { saveUpdatedTests } from '@/services/testsApi';
 
 export const useTestsStore = defineStore('tests', {
   state: () => ({
@@ -9,7 +10,7 @@ export const useTestsStore = defineStore('tests', {
   }),
   actions: {
     async loadTests() {
-      const saved = await findSaveUsers();
+      const saved = await findSaveTests();
       if (saved) {
         this.tests = JSON.parse(saved);
       } else {
@@ -20,7 +21,7 @@ export const useTestsStore = defineStore('tests', {
       const index = this.tests.findIndex(t => t.id === updatedTest.id);
       if (index !== -1) {
         this.tests[index] = updatedTest;
-        localStorage.setItem('tests', JSON.stringify(this.tests));
+        saveUpdatedTests(this.tests);
       }
     },
   },

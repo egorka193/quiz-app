@@ -2,7 +2,7 @@
   <QAModal ref="loginModal">
     <template #activator="{ open }">
       <v-btn
-        :class="[isLoggedIn ? 'disabled' : '']"
+        class="modal__btn-enter"
         variant="flat"
         @click="isLoggedIn ? handleLogout() : open()"
       >
@@ -20,27 +20,30 @@
       Вход
     </template>
 
+    
     <template 
       v-if="!isLoggedIn"
       #body
     >
-      <input 
-        v-model="login"
-        placeholder="Логин" 
-        class="modal-input" 
-      />
-      <input 
-        v-model="password" 
-        type="password" 
-        placeholder="Пароль" 
-        class="modal-input" 
-      />
-      <p 
-        v-if="errorMessage"
-        class="modal-error"
-      >
-        {{ errorMessage }}
-      </p>
+      <div class="modal__content">
+        <input 
+          v-model="login"
+          placeholder="Логин" 
+          class="modal-input" 
+        />
+        <input 
+          v-model="password" 
+          type="password" 
+          placeholder="Пароль" 
+          class="modal-input" 
+        />
+        <p 
+          v-if="errorMessage"
+          class="modal-error"
+        >
+          {{ errorMessage }}
+        </p>
+      </div>
     </template>
 
     <template 
@@ -64,6 +67,7 @@ import { ref, computed } from 'vue';
 import QAModal from '@/components/shared/QAModal.vue';
 import { useUserStore } from '@/pinia/pinia';
 import { useRouter } from 'vue-router';
+import { RoutesNames } from '@/router/types';
 
 export default {
   components: { QAModal },
@@ -81,7 +85,11 @@ export default {
       const success = await userStore.login(login.value, password.value);
       if (success) {
         loginModal.value?.close();
-        await router.push({ name: 'Admin' });
+        if (login.value === 'Admin') {
+          await router.push({ name: RoutesNames.Admin });
+        } else {
+          await router.push({ name: RoutesNames.Quizes });
+        }
       } else {
         errorMessage.value = 'Неверный логин или пароль';
       }
@@ -120,5 +128,13 @@ export default {
 .modal-error {
   color: red;
   text-align: center;
+}
+.modal__btn-enter {
+  background-color: rgba(195, 243, 243, 0.264);
+}
+.modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 </style>

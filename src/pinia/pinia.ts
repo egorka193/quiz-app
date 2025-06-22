@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia';
 import { checkInfo } from '@/services/adminApi';
-import { LocalStorageKeys, type User } from '@/services/types';
-import { getCurrentUserFromLs, setCurrentUser } from '@/services/utils';
+import { type User } from '@/services/types';
+import { getCurrentUserFromLs, setCurrentUser } from '@/services/adminApi';
+import { removeCurrentUser } from '@/services/adminApi';
 
-
+interface UserStore {
+  user: User | null
+}
 
 export const useUserStore = defineStore('user', {
-  state: () => ({
-    user: null as User | null,
+  state: (): UserStore => ({
+    user: null,
   }),
   actions: {
     async login(login: string, password: string): Promise<boolean> {
@@ -26,7 +29,7 @@ export const useUserStore = defineStore('user', {
     },
     logout() {
       this.user = null;
-      localStorage.removeItem(LocalStorageKeys.CurrentUser);
+      removeCurrentUser();
     },
     initializeUser() {
       const savedUser = getCurrentUserFromLs();

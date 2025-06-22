@@ -83,28 +83,6 @@ export default defineComponent({
   padding: 0;
   margin: 1rem 0;
 }
-
-.answers-list__option {
-  background: #f3f4f6;
-  border-radius: 8px;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.answers-list__option:hover {
-  background-color: #e0e7ff;
-}
-
-.answers-list__option.selected {
-  background-color: #4f46e5;
-  color: white;
-  font-weight: 600;
-  border-color: #4338ca;
-}
-
 .answers-list__btn {
   background-color: #4f46e5;
   color: white;

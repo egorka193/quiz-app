@@ -1,6 +1,6 @@
 
 export enum LocalStorageKeys {
-  Admin = 'adminData',
+  Users = 'usersData',
   CurrentUser = 'currentUser',
 }
 export type UserCredentials = {
