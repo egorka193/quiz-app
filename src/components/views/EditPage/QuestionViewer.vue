@@ -29,14 +29,14 @@
     <div class="question-card__answer">
       <p class="question-card__answer-label">Правильный ответ:</p>
       <span class="question-card__answer-value">
-        {{ Array.isArray(question.correctAnswer) ? question.correctAnswer.join(', ') : question.correctAnswer }}
+        {{ formattedCorrectAnswer }}
       </span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import QAButton from '@/components/shared/QAButton.vue';
 import type { Question } from '@/types';
 
@@ -54,8 +54,15 @@ export default defineComponent({
   setup(props, ctx) {
     const edit = () => ctx.emit('edit', props.question.id);
 
+    const formattedCorrectAnswer = computed(() => {
+      return Array.isArray(props.question.correctAnswer)
+        ? props.question.correctAnswer.join(', ')
+        : props.question.correctAnswer;
+    });
+
     return {
       edit,
+      formattedCorrectAnswer,
     };
   },
 });

@@ -62,16 +62,6 @@ export default defineComponent({
       editingQuestionId.value = id;
     };
 
-    const addCorrectAnswer = (question: Question) => {
-      if (question.type === QuestionType.multiple) {
-        question.correctAnswer.push('');
-      }
-    };
-
-    const removeCorrectAnswer = (question: Question, index: number) => {
-      question.correctAnswer.splice(index, 1);
-    };
-
     const saveEdit = () => {
       if (test.value) {
         store.updateTest(test.value);
@@ -79,45 +69,20 @@ export default defineComponent({
       editingQuestionId.value = null;
     };
 
-    function onTypeChange(question: Question) {
-      if (question.type === QuestionType.single) {
-        if (!question.options || question.options.length === 0) {
-          question.options = [''];
-        }
-        if (typeof question.correctAnswer === 'string') {
-          question.correctAnswer = [question.correctAnswer];
-        } else {
-          question.correctAnswer = [''];
-        }
-      } else if (question.type === QuestionType.multiple) {
-        if (!question.options || question.options.length === 0) {
-          question.options = ['', '', '', ''];
-        }
-        if (!Array.isArray(question.correctAnswer)) {
-          question.correctAnswer = [];
-        }
-        while (question.correctAnswer.length < question.options.length) {
-          question.correctAnswer.push('');
-        }
-      } else if (question.type === QuestionType.boolean) {
-        question.options = [];
-        if (typeof question.correctAnswer !== 'boolean') {
-          question.correctAnswer = [true];
-        }
-      } else if (question.type === QuestionType.text) {
-        question.options = [];
-        if (typeof question.correctAnswer !== 'string') {
-          question.correctAnswer = [''];
-        }
-      }
-    }
-
 
     onMounted(async () => {
       await store.loadTests();
     });
 
-    const generateId = () => `${test.value?.questions.length ?? 0}`;
+    const generateId = () => {
+      const ids = test.value?.questions.map(item => +item.id);
+      if(ids !== undefined){
+        let maxId =  Math.max(...ids);
+        maxId++;
+        return JSON.stringify(maxId);
+      }
+      return '0';
+    };
     const isEditing = (id: string) => editingQuestionId.value === id;
 
     const addQuestion = () => {
@@ -131,14 +96,21 @@ export default defineComponent({
         correctAnswer: [''],
       };
 
-      test.value.questions.unshift(newQuestion);
+      if (!test.value) return;
+
+      const updatedQuestions = [newQuestion, ...test.value.questions];
+      const updatedTest = { ...test.value, questions: updatedQuestions };
+      store.updateTest(updatedTest);
+
       editingQuestionId.value = newQuestion.id;
     };
 
     const deleteQuestion = (id: string) => {
       if (!test.value) return;
-      test.value.questions = test.value.questions.filter(q => q.id !== id);
-      store.updateTest(test.value);
+
+      const updatedQuestions = test.value.questions.filter(q => q.id !== id);
+      const updatedTest = { ...test.value, questions: updatedQuestions };
+      store.updateTest(updatedTest);
     };
 
     return {
@@ -147,9 +119,6 @@ export default defineComponent({
       startEdit,
       saveEdit,
       isEditing,
-      onTypeChange,
-      addCorrectAnswer,
-      removeCorrectAnswer,
       addQuestion,
       deleteQuestion,
     };
@@ -179,14 +148,9 @@ export default defineComponent({
   color: #333;
 }
 
-.question-card__options-title {
-  font-weight: 500;
-  margin-bottom: 5px;
-  color: #555;
-}
-
-.question-card__option {
-  margin-bottom: 4px;
+.question-card__options-list {
+  padding-left: 20px;
+  margin: 5px 0 15px;
 }
 
 .question-card__title {
@@ -194,11 +158,6 @@ export default defineComponent({
   margin-bottom: 10px;
   color: #34495e;
   max-width: 650px;
-}
-
-.question-card__options-list {
-  padding-left: 20px;
-  margin: 5px 0 15px;
 }
 .add-question-btn {
   padding: 6px 12px;
