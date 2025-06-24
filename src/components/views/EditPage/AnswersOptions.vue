@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p class="question-card__options-title">{{ title }}</p>
     <ul class="question-card__options-list">
       <li
         v-for="(item, index) in internalList"

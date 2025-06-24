@@ -19,7 +19,19 @@
 
     <div class="question-card__type">
       Тип:
-      <select 
+      <v-select
+        v-model="localQuestion.type"
+        :items="typeOptions"
+        item-title="label"
+        item-value="value"
+        class="edit-input"
+        label="Тип вопроса"
+        outlined
+        dense
+        @update:modelValue="onTypeChange"
+      />
+
+      <!-- <select 
         v-model="localQuestion.type" 
         class="edit-input" 
         @change="onTypeChange"
@@ -28,12 +40,12 @@
         <option :value="QuestionType.multiple">Несколько ответов</option>
         <option :value="QuestionType.boolean">Булевое значение</option>
         <option :value="QuestionType.text">Текстовое значение</option>
-      </select>
+      </select> -->
     </div>
 
     <AnswersOptions
-      v-if="localQuestion.options && localQuestion.options.length > 0"
-      v-model="localQuestion.options"
+      v-if="showAnswerOptions"
+      v-model="localQuestion.options!"
       title="Варианты"
       placeholder="Введите вариант ответа"
     />
@@ -63,28 +75,39 @@
         placeholder="Введите правильный ответ"
       />
 
-      <select 
+      <QASelect
+        v-if="localQuestion.type === QuestionType.boolean"
+        v-model="localQuestion.correctAnswer[0]"
+        :items="[
+          { title: 'Да', value: true },
+          { title: 'Нет', value: false }
+        ]"
+        label="Выберите правильный ответ"
+      />
+      <!-- <select 
         v-else-if="localQuestion.type === 'boolean'"
         v-model="localQuestion.correctAnswer[0]"
         class="edit-input"
       >
         <option :value="true">Да</option>
         <option :value="false">Нет</option>
-      </select>
+      </select> -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { QuestionType, type Question } from '@/types';
 import QAButton from '@/components/shared/QAButton.vue';
 import AnswersOptions from './AnswersOptions.vue';
+import QASelect from '@/components/shared/QASelect.vue';
 
 export default defineComponent({
   components: {
     QAButton,
     AnswersOptions,
+    QASelect,
   },
   props: {
     question: {
@@ -95,6 +118,21 @@ export default defineComponent({
   emits: ['save'],
   setup(props, ctx) {
     const localQuestion = ref({ ...props.question });
+
+    const typeOptions = [
+      { label: 'Один ответ', value: QuestionType.single },
+      { label: 'Несколько ответов', value: QuestionType.multiple },
+      { label: 'Булевое значение', value: QuestionType.boolean },
+      { label: 'Текстовое значение', value: QuestionType.text },
+    ];
+
+    const showAnswerOptions = computed(() => {
+      const q = localQuestion.value;
+      return (
+        q.type === QuestionType.single ||
+        q.type === QuestionType.multiple
+      );
+    });
     
 
     const save = () => {
@@ -127,10 +165,10 @@ export default defineComponent({
       if (!q) return;
 
       if (q.type === QuestionType.single) {
-        q.options ||= [''];
+        q.options = [''];
         q.correctAnswer = [''];
       } else if (q.type === QuestionType.multiple) {
-        q.options ||= ['', '', '', ''];
+        q.options = ['', '', '', ''];
         q.correctAnswer = q.correctAnswer.length ? q.correctAnswer : [''];
       } else if (q.type === QuestionType.boolean) {
         q.options = [];
@@ -150,6 +188,8 @@ export default defineComponent({
       addOption,
       removeOption,
       QuestionType,
+      typeOptions,
+      showAnswerOptions,
     };
   },
 
