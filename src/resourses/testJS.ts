@@ -7,27 +7,27 @@ export const jsTest: Test = {
   createdBy: 'admin-Egorka', 
   questions: [
     {
-      id: 'j1',
+      id: '1',
       type: QuestionType.single,
       question: 'Что вернёт выражение: typeof null?',
       options: ['object', 'null', 'undefined', 'number'],
       correctAnswer: ['object'],
     },
     {
-      id: 'j2',
+      id: '2',
       type: QuestionType.multiple,
       question: 'Какие типы данных есть в JavaScript?',
       options: ['string', 'number', 'undefined', 'enum', 'float'],
       correctAnswer: ['string', 'number', 'undefined'],
     },
     {
-      id: 'j3',
+      id: '3',
       type: QuestionType.boolean,
       question: 'Оператор \'===\' сравнивает и тип, и значение?',
       correctAnswer: [true],
     },
     {
-      id: 'j4',
+      id: '4',
       type: QuestionType.text,
       question: 'Как называется метод, преобразующий JSON-строку в объект?',
       correctAnswer: ['JSON.parse'],

@@ -7,27 +7,27 @@ export const vueTest: Test = {
   createdBy: 'admin-Egorka',
   questions: [
     {
-      id: 'v1',
+      id: '1',
       type: QuestionType.single,
       question: 'Какой директивой связывается значение input с данными компонента?',
       options: ['v-if', 'v-model', 'v-bind', 'v-for'],
       correctAnswer: ['v-model'],
     },
     {
-      id: 'v2',
+      id: '2',
       type: QuestionType.multiple,
       question: 'Какие хуки жизненного цикла существуют во Vue?',
       options: ['created', 'mounted', 'destroyed', 'updated', 'unmounted'],
       correctAnswer: ['created', 'mounted','updated', 'unmounted'],
     },
     {
-      id: 'v3',
+      id: '3',
       type: QuestionType.boolean,
       question: 'Во Vue 3 можно использовать Composition API.',
       correctAnswer: [true],
     },
     {
-      id: 'v4',
+      id: '4',
       type: QuestionType.text,
       question: 'Как называется функция для реактивных переменных в Composition API?',
       correctAnswer: ['ref'],
