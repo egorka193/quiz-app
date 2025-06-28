@@ -89,5 +89,4 @@ export default defineComponent({
 .home-actions a:hover {
   background-color: #4338ca;
 }
-
 </style>

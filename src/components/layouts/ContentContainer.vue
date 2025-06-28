@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="content-container">
     <RouterView />
   </div>
 </template>
@@ -12,7 +12,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.container {
+.content-container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 7px;

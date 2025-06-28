@@ -1,12 +1,10 @@
 <template>
   <v-dialog 
-    class="modal"
     v-model="isActive" 
+    class="qa-modal"
     :max-width="maxWidth"
   >
-    <template 
-      v-slot:activator="{ props: activatorProps }"
-    >
+    <template #activator="{ props: activatorProps }">
       <slot 
         name="activator" 
         v-bind="{ ...activatorProps, open }" 
@@ -14,7 +12,7 @@
     </template>
 
     <v-card>
-      <v-card-title class="modal-title">
+      <v-card-title class="qa-modal-title">
         <div class="title-content">
           <slot name="title">
             {{ title }}
@@ -22,9 +20,9 @@
         </div>
         <v-btn 
           icon 
-          @click="close" 
           variant="text" 
           class="close-btn"
+          @click="close" 
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -85,7 +83,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.modal-title {
+.qa-modal-title {
   display: flex;
   justify-content: space-between;
   align-items: center;

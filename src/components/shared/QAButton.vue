@@ -1,5 +1,5 @@
 <template>
-  <v-btn>
+  <v-btn class="qa-button">
     <slot />
   </v-btn>
 </template>
@@ -12,5 +12,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 </style>
