@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { allTests } from '@/resourses/allTests';
 import { RoutesNames } from '@/router/types';
 
-
 const router = createRouter({
   history: createWebHistory(),
   routes: [

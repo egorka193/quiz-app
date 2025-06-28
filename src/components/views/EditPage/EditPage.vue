@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="edit-page">
     <QAButton
       class="add-question-btn"
       @click="addQuestion"
@@ -69,14 +69,13 @@ export default defineComponent({
       editingQuestionId.value = null;
     };
 
-
     onMounted(async () => {
       await store.loadTests();
     });
 
     const generateId = () => {
       const ids = test.value?.questions.map(item => +item.id);
-      if(ids !== undefined){
+      if(ids){
         let maxId =  Math.max(...ids);
         maxId++;
         return JSON.stringify(maxId);

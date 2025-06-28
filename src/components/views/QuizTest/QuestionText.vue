@@ -1,12 +1,12 @@
 <template>
-  <div class="text-answer">
+  <div class="question-text">
     <input
       v-model="textAnswer"
       type="text"
       placeholder="Введите ответ"
     />
     <QAButton 
-      class="answers-list__btn" 
+      class="question-text__btn" 
       :disabled="!canSubmit"
       @click="submitAnswer"
     >
@@ -59,13 +59,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.text-answer {
+.question-text {
   margin: 1rem 0;
   display: flex;
   flex-direction: column;
 }
 
-.text-answer input {
+.question-text input {
   padding: 10px 15px;
   font-size: 16px;
   border: 2px solid #ccc;
@@ -74,12 +74,12 @@ export default defineComponent({
   box-sizing: border-box;
 }
 
-.text-answer input:focus {
+.question-text input:focus {
   border-color: #4f46e5;
   box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
 }
 
-.text-answer button {
+.question-text__btn {
   margin-top: 15px;
   background-color: #4f46e5;
   color: white;
@@ -91,7 +91,7 @@ export default defineComponent({
   transition: background-color 0.3s ease;
 }
 
-.text-answer button:disabled {
+.question-text__btn:disabled {
   background-color: #a1a1aa;
   cursor: not-allowed;
 }

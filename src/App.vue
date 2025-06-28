@@ -4,6 +4,7 @@
     <ContentContainer />
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import QAHeader from './components/layouts/Header.vue';

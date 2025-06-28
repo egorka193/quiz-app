@@ -1,5 +1,6 @@
 <template>
   <li
+    class="question-option-select"
     :class="{ selected: isSelected }"
     @click="handleClick"
   >

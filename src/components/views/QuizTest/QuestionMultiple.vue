@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="question-multiple">
     <ul class="answers-list">
       <QuestionOptionSelect
         class="answers-list__option"

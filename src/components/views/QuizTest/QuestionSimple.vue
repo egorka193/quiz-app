@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="questoin-simple">
     <ul class="answers-list">
       <QuestionOptionSelect
         class="answers-list__option"
@@ -88,5 +88,4 @@ export default defineComponent({
   background-color: #a1a1aa;
   cursor: not-allowed;
 }
-
 </style>

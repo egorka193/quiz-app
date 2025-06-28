@@ -20,7 +20,6 @@
       Вход
     </template>
 
-    
     <template 
       v-if="!isLoggedIn"
       #body
@@ -30,13 +29,13 @@
           v-model="login"
           placeholder="Логин" 
           class="modal-input" 
-        />
+        >
         <input 
           v-model="password" 
           type="password" 
           placeholder="Пароль" 
           class="modal-input" 
-        />
+        >
         <p 
           v-if="errorMessage"
           class="modal-error"

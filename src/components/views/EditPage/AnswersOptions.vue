@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="answers-options">
     <ul class="question-card__options-list">
       <li
         v-for="(item, index) in internalList"

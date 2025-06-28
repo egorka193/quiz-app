@@ -1,4 +1,3 @@
-
 export const fakeApiRequest = <T>(response: T): Promise<T> => {
   return new Promise((resolve) => {
     setTimeout(() => {

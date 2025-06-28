@@ -8,7 +8,7 @@
         <input 
           v-model="localQuestion.question" 
           class="edit-input" 
-        />
+        >
       </h3>
       <div class="question-card__edit">
         <QAButton @click="save">
@@ -30,17 +30,6 @@
         dense
         @update:modelValue="onTypeChange"
       />
-
-      <!-- <select 
-        v-model="localQuestion.type" 
-        class="edit-input" 
-        @change="onTypeChange"
-      >
-        <option :value="QuestionType.single">Один ответ</option>
-        <option :value="QuestionType.multiple">Несколько ответов</option>
-        <option :value="QuestionType.boolean">Булевое значение</option>
-        <option :value="QuestionType.text">Текстовое значение</option>
-      </select> -->
     </div>
 
     <AnswersOptions
@@ -58,7 +47,7 @@
         v-model="localQuestion.correctAnswer[0]"
         class="edit-input"
         placeholder="Введите правильный ответ"
-      />
+      >
 
       <textarea
         v-else-if="localQuestion.type === 'text'"
@@ -84,14 +73,6 @@
         ]"
         label="Выберите правильный ответ"
       />
-      <!-- <select 
-        v-else-if="localQuestion.type === 'boolean'"
-        v-model="localQuestion.correctAnswer[0]"
-        class="edit-input"
-      >
-        <option :value="true">Да</option>
-        <option :value="false">Нет</option>
-      </select> -->
     </div>
   </div>
 </template>
@@ -220,5 +201,4 @@ export default defineComponent({
   gap: 8px;
   margin-bottom: 8px;
 }
-
 </style>

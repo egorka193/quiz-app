@@ -1,4 +1,3 @@
-
 export enum LocalStorageKeys {
   Users = 'usersData',
   CurrentUser = 'currentUser',
